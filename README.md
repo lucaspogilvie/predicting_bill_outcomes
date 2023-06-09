@@ -20,6 +20,7 @@ The goal of this study is to develop machine learning classification models pred
 ## Software Requirements
 - Pandas
 - Scikit-learn
+- Imblearn
 - numpy
 - matplotlib.pyplot
 - seaborn
@@ -108,6 +109,75 @@ This graph shows the percentage of bills passing for Republican, Democrat, and S
 
 ---
 ## Model Building
+
+We built two models for this project,Logistic and Random Forest. Here are the summaries of both.
+
+### Logistic
+Logistic regression is a fundamental classification technique. It uses a logistic function to transform the linear regression output into a probability score, which can be interpreted as the likelihood of belonging to a particular class. For this problem, we have categorical features such as the party of the governor and of the chambers. These columns will be onee hot encoded. We also have text data as well. For this, we will need to use Count Vectorizer and Tfidf Vectorizer in order to plug them into the Logistic model.
+
+CountVectorizer is a feature extraction technique used in natural language processing to convert text documents into numerical representations. It creates a matrix where each row corresponds to a document, and each column represents the frequency of a specific word in that document. TF-IDF Vectorizer stands for Term Frequency-Inverse Document Frequency Vectorizer. It is another feature extraction method used in NLP that assigns weights to each word in a document based on its frequency within the document and its rarity across all documents. The resulting matrix reflects the importance of each word in a document relative to the entire corpus. Both of these techniques are used in order to extract information through our modeling.
+
+As our target variable is very imbalanced, oversampling techniques will be used to help our model recognize the unbalanced class. The most notable method we will use is SMOTE, (Synthetic Minority Over-sampling Technique). SMOTE creates synthetic samples of the minority class by interpolating new instances between existing minority class samples, effectively balancing the dataset and improving the performance of classification models on the minority class.
+
+During our modeling, we are trying to optimize for the metric of recall. this is because a bill rarely passes, and it would be helpful for those who use our model to know wether a bill is more likely to pass.
+
+Below is a summary of our results on the test data with our best results in bold.
+
+|Model|accuracy|recall|precision|
+|---|---|---|---|
+|cv_logit|0.828602|0.349817|0.646362
+|cv_lemma_logit|0.830094|0.342857|0.659387
+|cv_stem_logit|0.827595|0.319414|0.658113
+|tfidif_logit|0.834757|0.298168|0.731357
+|cv_SMOTE_logit|0.752247|0.634982|0.427181
+|cv_OverSample_logit|0.746988|0.649084|0.421353
+|**tfidf_SMOTE_logit**|**0.747920**|**0.658425**|**0.423539**
+
+The model in bold has lower accuracy than the baseline model. This is okay though because we are trying to optimize for recall. This model can identify 66% of the bills that pass from the test data. When it does think it is a passed bill, it is correct 42% of the time. These may not be the best results, and this could be due to the lack of information in some titles. For example, the bill titled 'An Act establishing the Jonesville Public Use Area.' may not be very useful to our model. This is not enough info to predict whether it will pass or not. in the next notebook, Random Forest are used to predict bill outcome based off of their titles and results are slightly better there. 
+
+We also tested models on different text data such as the bills subjects and abstracts. Although these are outside the scope of the problem statement, they show promise to improve on our model in future studies.
+
+|Model|accuracy|recall|precision|
+|---|---|---|---|
+|subjects_SMOTE|0.728441|0.643970|0.395400
+|abstracts_SMOTE|0.782182|0.714592|0.521739
+
+These are impressive results as the recall is quite high and the accuracy is very close to the baseline. The precision is also quite high. This is very promissing for further research.
+
+No inference was done for this model because the performance is too poor to have any valuable inference from it.
+
+### Random Forest
+
+Random Forest Classifier is a complicated model than the Logistic Regression. It is an ensemble learning algorithm that combines multiple decision trees to make predictions. It operates by constructing a multitude of decision trees during training and outputs the class that is the mode of the classes predicted by individual trees. The features used in this model are similar to the logistic regression. We have categorical features such as the party of the governor and of the chambers. These columns will be one hot encoded. We also have text data as well. For this, we will need to use Count Vectorizer and Tfidf Vectorizer in order to plug them into the Logistic model.
+
+CountVectorizer is a feature extraction technique used in natural language processing to convert text documents into numerical representations. It creates a matrix where each row corresponds to a document, and each column represents the frequency of a specific word in that document. TF-IDF Vectorizer stands for Term Frequency-Inverse Document Frequency Vectorizer. It is another feature extraction method used in NLP that assigns weights to each word in a document based on its frequency within the document and its rarity across all documents. The resulting matrix reflects the importance of each word in a document relative to the entire corpus. Both of these techniques are used in order to extract information through our modeling.
+
+As our target variable is very imbalanced, oversampling techniques will be used to help our model recognize the unbalanced class. As with our last model, we will again use SMOTE, but we will find better results by changing a hyperparameter in the Random Forest Classifier called class weight. Changing this hyper parameter to 'balanced_subsample' will boost the importance of the smaller class making it easier for the model to recognize the bills passing class.
+
+We used many combinations of mdoels and tuned the hyperarameters. Here is a summery of the results:
+
+|Model|accuracy|recall|precision|
+|---|---|---|---|
+|rf|0.827260|0.427473|0.607971
+|rf_hyperparams_overfit|0.836063|0.354762|0.689569
+|rf_hyperparams_better|0.837778|0.293407|0.765409
+|rf_hyperparams_sample_leaf|0.829460|0.212088|0.810924
+|**rf_hyperparams_balanced_subsamples**|**0.725391**|**0.740293**|**0.404767**
+|rf_SMOTE|0.759223|0.612637|0.435264
+|smaller_df|0.765522|0.669839|0.483469
+
+The best model was one with the balanced subsamples and other hyperparameters tuned. It is able to identify 75% of the passed bills in the test set and when it gets predicts it is going to be enacted, it is correct 40% of the time. This isn't the most impressive result but could be of some use to people interested in having a better idea whether a bill will pass or not. 
+
+<img src = "Code/04_Modeling/confusion_matrix.png">
+
+Also did random fores tusing the abstracts instead.
+
+|Model|accuracy|recall|precision|
+|---|---|---|---|
+abstracts|0.74913|0.752146|0.473809
+
+This model using the abstracts does very well compared to the titles. This may be because there is more information in the abstracts. It is outside the scope of our problem statement though but shows promise for further study.
+
 
 ## Conclusions and Recommendations
 
