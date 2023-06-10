@@ -1,0 +1,50 @@
+states,senate_dem,senate_rep,house_dem,house_rep,gov_party
+Alabama,8,27,28,77,Rep
+Alaska,9,11,13,21,Rep
+Arizona,13,16,29,30,Dem
+Arkansas,6,29,18,82,Rep
+California,32,8,62,18,Dem
+Colorado,23,12,46,19,Dem
+Connecticut,24,12,98,53,Dem
+Delaware,15,6,26,15,Dem
+Florida,12,28,35,85,Rep
+Georgia,23,33,80,100,Rep
+Hawaii,23,2,45,6,Dem
+Idaho,7,28,11,59,Rep
+Illinois,40,19,78,40,Dem
+Indiana,10,40,30,70,Rep
+Iowa,16,34,36,64,Rep
+Kansas,11,28,40,85,Dem
+Kentucky,7,30,19,80,Dem
+Louisiana,12,27,33,71,Dem
+Maine,22,13,82,67,Dem
+Maryland,34,13,102,39,Dem
+Massachusetts,37,3,132,25,Dem
+Michigan,20,18,56,54,Dem
+Minnesota,34,33,70,64,Dem
+Mississippi ,16,36,40,77,Rep
+Missouri,10,24,51,111,Rep
+Montana,16,34,32,68,Rep
+Nevada,13,8,28,14,Rep
+New Hampshire,10,14,196,200,Rep
+New Jersey,25,15,46,34,Dem
+New Mexico,27,15,45,25,Dem
+New York,42,21,102,48,Dem
+North Carolina,20,30,48,72,Dem
+North Dakota  ,4,43,12,82,Rep
+Ohio,7,26,32,67,Rep
+Oklahoma,8,40,20,81,Rep
+Oregon,17,12,35,25,Dem
+Pennsylvania,22,28,102,101,Dem
+Rhode Island ,33,5,65,9,Dem
+South Carolina,16,30,36,88,Rep
+South Dakota,4,31,7,63,Rep
+Tennessee,6,27,24,75,Rep
+Texas,13,18,64,85,Rep
+Utah,6,23,14,61,Rep
+Vermont,22,7,104,37,Rep
+Virginia,22,18,46,50,Rep
+Washington,29,20,58,40,Dem
+West Virginia,3,31,11,89,Rep
+Wisconsin,11,22,35,63,Dem
+Wyoming,2,29,5,57,Rep

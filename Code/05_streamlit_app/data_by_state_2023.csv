@@ -1,0 +1,50 @@
+states,gov_party,senate_party,house_party,state_party_control
+Alabama,Rep,Rep,Rep,Rep
+Alaska,Rep,Rep,Rep,Rep
+Arizona,Dem,Rep,Rep,Split
+Arkansas,Rep,Rep,Rep,Rep
+California,Dem,Dem,Dem,Dem
+Colorado,Dem,Dem,Dem,Dem
+Connecticut,Dem,Dem,Dem,Dem
+Delaware,Dem,Dem,Dem,Dem
+Florida,Rep,Rep,Rep,Rep
+Georgia,Rep,Rep,Rep,Rep
+Hawaii,Dem,Dem,Dem,Dem
+Idaho,Rep,Rep,Rep,Rep
+Illinois,Dem,Dem,Dem,Dem
+Indiana,Rep,Rep,Rep,Rep
+Iowa,Rep,Rep,Rep,Rep
+Kansas,Dem,Rep,Rep,Split
+Kentucky,Dem,Rep,Rep,Split
+Louisiana,Dem,Rep,Rep,Split
+Maine,Dem,Dem,Dem,Dem
+Maryland,Dem,Dem,Dem,Dem
+Massachusetts,Dem,Dem,Dem,Dem
+Michigan,Dem,Dem,Dem,Dem
+Minnesota,Dem,Dem,Dem,Dem
+Mississippi ,Rep,Rep,Rep,Rep
+Missouri,Rep,Rep,Rep,Rep
+Montana,Rep,Rep,Rep,Rep
+Nevada,Rep,Dem,Dem,Split
+New Hampshire,Rep,Rep,Rep,Rep
+New Jersey,Dem,Dem,Dem,Dem
+New Mexico,Dem,Dem,Dem,Dem
+New York,Dem,Dem,Dem,Dem
+North Carolina,Dem,Rep,Rep,Split
+North Dakota  ,Rep,Rep,Rep,Rep
+Ohio,Rep,Rep,Rep,Rep
+Oklahoma,Rep,Rep,Rep,Rep
+Oregon,Dem,Dem,Dem,Dem
+Pennsylvania,Dem,Rep,Dem,Split
+Rhode Island ,Dem,Dem,Dem,Dem
+South Carolina,Rep,Rep,Rep,Rep
+South Dakota,Rep,Rep,Rep,Rep
+Tennessee,Rep,Rep,Rep,Rep
+Texas,Rep,Rep,Rep,Rep
+Utah,Rep,Rep,Rep,Rep
+Vermont,Rep,Dem,Dem,Split
+Virginia,Rep,Dem,Rep,Split
+Washington,Dem,Dem,Dem,Dem
+West Virginia,Rep,Rep,Rep,Rep
+Wisconsin,Dem,Rep,Rep,Split
+Wyoming,Rep,Rep,Rep,Rep
