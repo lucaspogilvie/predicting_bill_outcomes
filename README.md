@@ -3,6 +3,7 @@
 ## Contents:
 
 - [Problem Statement](#Problem-Statement)
+- [State Bills](#The-Simplified-Journey-of-a-State-Bill)
 - [Software Requirements](#Software-Requirements)
 - [Data Sources](#Data-Sources)
 - [Data Cleaning](#Data-Cleaning)
@@ -10,11 +11,20 @@
 - [Exploratory Data Analysis](#Exploratory-Data-Analysis)
 - [Data preprocessing](#Data-Preprocessing)
 - [Model Building](#Model-Building)
+- [Streamlit App](#Streamlit-App)
 - [Conclusions and Recommendations](#Conclusions-and-Recommendations)
 ---
 ## Problem Statement
 
-The goal of this study is to develop machine learning classification models predicting whether a state bill will pass or not using Natural Language Processing of the bill's title. Performance of this model will be guided by balanced accuracy, and should improve on the baseline accuracy by 10%. 
+The goal of this study is to develop machine learning classification models predicting whether a state bill will be enacted into law or not using Natural Language Processing of the bill's title. Performance of this model will be guided by recall, as it is more consequential to identify the bills that have a chance of being enacted into law. The deliverable for this project will be an app that users can use to see the predicted outcome of the bill according to the model.
+
+---
+## The Simplified Journey of a State Bill
+In the US, we have three branches of government; the judicial, the legislative and the executive. On the national stage, the judicial branch is seen as the Supreme Court, the legislative as Congress, and the executive as the President. The US also has these three branches of government at the state level as well. Each state has a judiciary branch, a legislative branch with an upper and lower house, and an executive branch as the state governor. Their roles differ, and in terms of laws, they are defined as; the judicial branch interprets the laws, the legislative makes the laws, and the executive enforces the laws and has the power to veto laws created by the legislature. So, in terms of this project, we are concerned wth the state legislative branch and the state governors.
+
+Every state bill's journey begins in the state's Congress. The Congress is made up of two houses, usually refered to as the House of Representatives (lower house) and the Senate (upper house), although the names differ from state to state. These houses are made up of many legislatures that intorduce and vote on bills. A bill can be introduced in either house. After a few readings, the bill is voted on. If it passes the first house it was introduced in, it goes to the other house in congress. In the second house, the bill must go through a similar process and is then voted on in that house. If it passes the vote, it moves onto the executive branch. The governor then has a choice either to veto the bill, or to sign it into law. If the bill fails at any of these three steps, it will not be enacted into law without revisions made to it.
+
+This project hopes to be able to predict if a bill will pass these three steps based off of it's title, the majority party of the lower house, the majority party of the upper house, and the party of the governor.
 
 ---
 ## Software Requirements
@@ -25,14 +35,15 @@ The goal of this study is to develop machine learning classification models pred
 - matplotlib.pyplot
 - seaborn
 - plotly
+- streamlit
 
 ---
 ## Data Sources
-The Data for this project came from severall sources and then was merged together. 
+The Data for this project came from severall sources and was then merged together. 
 
 The Legislative composition data for years 2017-2023 comes from the National Conferance of State Legislatures [website](https://www.ncsl.org/about-state-legislatures/state-partisan-composition). The data has information on the party composition of state legislators for each state. It also has the party for each governor. This data needed some preprocessing to convert it into the wanted format of csv files as it is stored in pdf files. 
 
-The Bills data is from the Open States [website](https://openstates.org/data/session-csv/). Open States is an organization that aggregates, standardizes, and cleans legislative data for all 50 states. The data used for this study is from the bulk data they offer of proposed bills in the state's legislature. The data is stored in zip files for each legislative session by state. Open States scrapes their data directly from government websites and seems to be quite reliable. The data on the legislatures party also comes from Open Sates, but from their python [API](https://openstates.github.io/pyopenstates/). A limitation off the API is that there is a limit of requests that can be made per day. Because of this, a few days were needed to collect all of the Legislature data. To use the API you need to create an account and then get an API key from Open States.
+The Bills data is from the Open States [website](https://openstates.org/data/session-csv/). Open States is an organization that aggregates, standardizes, and cleans legislative data for all 50 states. The data used for this study is from the bulk data they offer of proposed bills in the state's legislature. The data is stored in zip files for each legislative session by state. Open States scrapes their data directly from government websites and seems to be quite reliable. The data on the legislatures' party also comes from Open Sates, but from their python [API](https://openstates.github.io/pyopenstates/). A limitation of the API is that there is a limit of requests that can be made per day. Because of this, a few days were needed to collect all of the Legislature data. To use the API you need to create an account and then get an API key from Open States.
 
 The Legislative Bills Progression data comes from the Harvard Dataverse and was published by Dr. Garlick in April, 2023 ([link to data](https://dataverse.harvard.edu/dataset.xhtml?persistentId=doi:10.7910/DVN/8PTHXT)). The dataset contains over a million bills for all states from the years of 2011 to 2019. It includes the 23 step progression of each bill showing where it failed or if it was enacted into law. Dr. Garlick and his team used Open Sates to create this data set.
 
@@ -41,7 +52,7 @@ After merging all of the datasets together, we ended up with two datasets; one w
 ---
 ## Data Cleaning
 
-First, many redundant columns were removed. They were removed because either they had too many missing values, or because they were irrelevant to the study. Secondly, some columns were cleaned up a bit. For example, the subject column had a list of subjects that the bill relates to. It would be more useful if it was in just a normal string format rather than a list so word count vectorizer could be used on it in the modeling phase. Lastly, we will have to get rid of a big chunk of our data because we are only interested in types of Legislation that can infact become laws. The column statute helped with this phase.
+First, many redundant columns were removed. They were removed because either they had too many missing values, or because they were irrelevant to the study. Secondly, some columns were cleaned up a bit. For example, the subject column had a list of subjects that the bill relates to. It would be more useful if it was in just a normal string format rather than a list so word count vectorizer could be used on it in the modeling phase. Lastly, a big chunk of the data was removedas we are only interested in types of legislation that can infact become a law as apposed to a simple resolution.
 
 Before cleaning, the bigger dataset with one less column had 160,000 bills with 63 columns. After cleaning it has around 110,000 bills with 19 columns. The smaller dataset had around 85,000 bills and ended with 60,000 bills.
 
@@ -110,16 +121,16 @@ This graph shows the percentage of bills passing for Republican, Democrat, and S
 ---
 ## Model Building
 
-We built two models for this project,Logistic and Random Forest. Here are the summaries of both.
+Two types of models were built for this project, Logistic and Random Forest. Here are the summaries of both.
 
 ### Logistic
-Logistic regression is a fundamental classification technique. It uses a logistic function to transform the linear regression output into a probability score, which can be interpreted as the likelihood of belonging to a particular class. For this problem, we have categorical features such as the party of the governor and of the chambers. These columns will be onee hot encoded. We also have text data as well. For this, we will need to use Count Vectorizer and Tfidf Vectorizer in order to plug them into the Logistic model.
+Logistic regression is a fundamental classification technique. It uses a logistic function to transform the linear regression output into a probability score, which can be interpreted as the likelihood of belonging to a particular class. For this problem, we have categorical features such as the party of the governor and of the chambers. These columns were be one hot encoded. We also used text data as well. For this, Count Vectorizer and Tfidf Vectorizer were used in order to plug them into the Logistic model.
 
 CountVectorizer is a feature extraction technique used in natural language processing to convert text documents into numerical representations. It creates a matrix where each row corresponds to a document, and each column represents the frequency of a specific word in that document. TF-IDF Vectorizer stands for Term Frequency-Inverse Document Frequency Vectorizer. It is another feature extraction method used in NLP that assigns weights to each word in a document based on its frequency within the document and its rarity across all documents. The resulting matrix reflects the importance of each word in a document relative to the entire corpus. Both of these techniques are used in order to extract information through our modeling.
 
-As our target variable is very imbalanced, oversampling techniques will be used to help our model recognize the unbalanced class. The most notable method we will use is SMOTE, (Synthetic Minority Over-sampling Technique). SMOTE creates synthetic samples of the minority class by interpolating new instances between existing minority class samples, effectively balancing the dataset and improving the performance of classification models on the minority class.
+As our target variable is very imbalanced, oversampling techniques were used to help our model recognize the unbalanced class. The most notable method used was SMOTE, (Synthetic Minority Over-sampling Technique). SMOTE creates synthetic samples of the minority class by interpolating new instances between existing minority class samples, effectively balancing the dataset and improving the performance of classification models on the minority class.
 
-During our modeling, we are trying to optimize for the metric of recall. this is because a bill rarely passes, and it would be helpful for those who use our model to know wether a bill is more likely to pass.
+During our modeling, we were optimizing for the metric of recall. this is because a bill rarely passes, and it would be helpful for those who use our model to know wether a bill is more likely to pass.
 
 Below is a summary of our results on the test data with our best results in bold.
 
@@ -148,13 +159,11 @@ No inference was done for this model because the performance is too poor to have
 
 ### Random Forest
 
-Random Forest Classifier is a complicated model than the Logistic Regression. It is an ensemble learning algorithm that combines multiple decision trees to make predictions. It operates by constructing a multitude of decision trees during training and outputs the class that is the mode of the classes predicted by individual trees. The features used in this model are similar to the logistic regression. We have categorical features such as the party of the governor and of the chambers. These columns will be one hot encoded. We also have text data as well. For this, we will need to use Count Vectorizer and Tfidf Vectorizer in order to plug them into the Logistic model.
+Random Forest Classifier is a more complicated model compared to Logistic Regression. It is an ensemble learning algorithm that combines multiple decision trees to make predictions. It operates by constructing a multitude of decision trees during training and outputs the class that is the mode of the classes predicted by individual trees. The features used in this model are similar to the logistic regression. We have categorical features such as the party of the governor and of the chambers. These columns will be one hot encoded. We also have text data as well. For this, Count Vectorizer and Tfidf Vectorizer were used again.
 
-CountVectorizer is a feature extraction technique used in natural language processing to convert text documents into numerical representations. It creates a matrix where each row corresponds to a document, and each column represents the frequency of a specific word in that document. TF-IDF Vectorizer stands for Term Frequency-Inverse Document Frequency Vectorizer. It is another feature extraction method used in NLP that assigns weights to each word in a document based on its frequency within the document and its rarity across all documents. The resulting matrix reflects the importance of each word in a document relative to the entire corpus. Both of these techniques are used in order to extract information through our modeling.
+As our target variable is very imbalanced, oversampling techniques were helpful for our model recognize the unbalanced class. As with our the Logistic model, SMOTE was used again. There is also a hyperparameter in the Random Forest Classifier called class weight. Changing this hyper parameter to 'balanced_subsample' boosted the importance of the smaller class making it easier for the model to recognize the bills passing class.
 
-As our target variable is very imbalanced, oversampling techniques will be used to help our model recognize the unbalanced class. As with our last model, we will again use SMOTE, but we will find better results by changing a hyperparameter in the Random Forest Classifier called class weight. Changing this hyper parameter to 'balanced_subsample' will boost the importance of the smaller class making it easier for the model to recognize the bills passing class.
-
-We used many combinations of mdoels and tuned the hyperarameters. Here is a summery of the results:
+We used many combinations of models and tuned the hyperarameters. Here is a summary of the results:
 
 |Model|accuracy|recall|precision|
 |---|---|---|---|
@@ -166,11 +175,11 @@ We used many combinations of mdoels and tuned the hyperarameters. Here is a summ
 |rf_SMOTE|0.759223|0.612637|0.435264
 |smaller_df|0.765522|0.669839|0.483469
 
-The best model was one with the balanced subsamples and other hyperparameters tuned. It is able to identify 75% of the passed bills in the test set and when it gets predicts it is going to be enacted, it is correct 40% of the time. This isn't the most impressive result but could be of some use to people interested in having a better idea whether a bill will pass or not. 
+The best model was one with the balanced subsamples and other hyperparameters tuned. It is able to identify 75% of the passed bills in the test set and when it predicts it is going to be enacted, it is correct 40% of the time. This isn't the most impressive result but could be of some use to people interested in having a better idea whether a bill will pass or not. 
 
 <img src = "Code/04_Modeling/confusion_matrix.png">
 
-Also did random fores tusing the abstracts instead.
+Also tried random forest models using the abstracts instead:
 
 |Model|accuracy|recall|precision|
 |---|---|---|---|
@@ -178,8 +187,23 @@ abstracts|0.74913|0.752146|0.473809
 
 This model using the abstracts does very well compared to the titles. This may be because there is more information in the abstracts. It is outside the scope of our problem statement though but shows promise for further study.
 
+---
+## Streamlit App
 
+The goal of this app is to demo what a product might look like for users of this model. Users would need to copy and paste the bill title they are interested in and the state it is being introduced in to see what outcome for the bill the model would predict. 
+
+Below is a screenshot of the home page of the app with a title of the app, a section describing the model and a section for the user to input the state bill's information of interest.
+
+<img src = "Code/05_streamlit_app/streamlit_app.png">
+
+Below is an example of the app in use. Here we have the title of a bill intorduced on January 2019, 2023 in the Washington State Senate by By Senators Fortunato and Wilson, J. At the time of writing this, it is still in the senate and the outcome is unknown, but the model predicts that it will pass.  
+
+<img src = "Code/05_streamlit_app/streamlit_prediction.png">
+
+---
 ## Conclusions and Recommendations
 
+Can you predict the outcome of a bill using Natural Language Processing on the bill's title? This study shows that it is possible. We were able to create a model that was able to identify 75% of bills that did pass. This is impressive as only 20% of introduced bills are enacted into law. I see this model being used by civicly minded people that are curious the chance of a bill passin 
 
+The drawbacks of the model made in this study though is that it is not very precise and has a lower accuracy than the baseline model. This may be due to limitations in the amount of information in a bill's title. Some titles have plenty of information, while others contain very little. I think to improve on this model for future
 
