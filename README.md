@@ -41,7 +41,7 @@ This project hopes to be able to predict if a bill will pass these three steps b
 ## Data Sources
 The Data for this project came from severall sources and was then merged together. 
 
-The Legislative composition data for years 2017-2023 comes from the National Conferance of State Legislatures [website](https://www.ncsl.org/about-state-legislatures/state-partisan-composition). The data has information on the party composition of state legislators for each state. It also has the party for each governor. This data needed some preprocessing to convert it into the wanted format of csv files as it is stored in pdf files. 
+The Legislative composition data for years 2017-2023 comes from the National Conference of State Legislatures [website](https://www.ncsl.org/about-state-legislatures/state-partisan-composition). The data has information on the party composition of state legislators for each state. It also has the party for each governor. This data needed some preprocessing to convert it into the wanted format of csv files as it is stored in pdf files. 
 
 The Bills data is from the Open States [website](https://openstates.org/data/session-csv/). Open States is an organization that aggregates, standardizes, and cleans legislative data for all 50 states. The data used for this study is from the bulk data they offer of proposed bills in the state's legislature. The data is stored in zip files for each legislative session by state. Open States scrapes their data directly from government websites and seems to be quite reliable. The data on the legislatures' party also comes from Open Sates, but from their python [API](https://openstates.github.io/pyopenstates/). A limitation of the API is that there is a limit of requests that can be made per day. Because of this, a few days were needed to collect all of the Legislature data. To use the API you need to create an account and then get an API key from Open States.
 
@@ -194,16 +194,21 @@ The goal of this app is to demo what a product might look like for users of this
 
 Below is a screenshot of the home page of the app with a title of the app, a section describing the model and a section for the user to input the state bill's information of interest.
 
+<kbd>
 <img src = "Code/05_streamlit_app/streamlit_app.png">
+</kbd>
 
 Below is an example of the app in use. Here we have the title of a bill intorduced on January 2019, 2023 in the Washington State Senate by By Senators Fortunato and Wilson, J. At the time of writing this, it is still in the senate and the outcome is unknown, but the model predicts that it will pass.  
 
+<kbd>
 <img src = "Code/05_streamlit_app/streamlit_prediction.png">
+</kbd>
 
 ---
 ## Conclusions and Recommendations
 
-Can you predict the outcome of a bill using Natural Language Processing on the bill's title? This study shows that it is possible. We were able to create a model that was able to identify 75% of bills that did pass. This is impressive as only 20% of introduced bills are enacted into law. I see this model being used by civicly minded people that are curious the chance of a bill passin 
+Can you predict the outcome of a bill using Natural Language Processing on the bill's title? This study shows that it is possible. We were able to create a model that was able to identify 75% of bills that did pass. This is impressive as only 20% of introduced bills are enacted into law. The model was also very accurate when it predicted a bill would not pass, it was correct around 90% of the time in that category. A major drawback to the model though, was that it was not precise when it predicted a bill would pass. It was only correct 40% of the time for these predictions. Because of this, I do not see this model being very useful to most people. If it predicts a bill will fail, we can be confident it will fail. If it predicts it will pass, it is a toss up wheter it will pass or not.
 
-The drawbacks of the model made in this study though is that it is not very precise and has a lower accuracy than the baseline model. This may be due to limitations in the amount of information in a bill's title. Some titles have plenty of information, while others contain very little. I think to improve on this model for future
+Although I don't see this model being very useful as is, I do see areas of improvement that could make it a great model. For one, we were studying whether the title of a bill couls help predict the outcome of that peice of legislature. A bill's title may lack information. In the modeling codebooks, we a few models were tried using the bill's abstract that has a much more information about the bill for the model to learn from. This showed promising results, they outperformed our model using the titles and had much less data. Another area of improvement would be using a different type model called a BERT (Bidirectional Encoder Representations from Transformers) model. This model can learn contextual relations between words which would be very helpful for this model. The issue with this model is that it is very computationally expensive.
 
+Overall, I am happy with this project! I learned a lot and think it is pretty interesting stuff!
